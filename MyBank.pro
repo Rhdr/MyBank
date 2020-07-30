@@ -31,7 +31,6 @@ SOURCES += \
     Core/dbmanager.cpp \
     Core/User.cpp \
     Core/UserManager.cpp \
-    Ui/loginscreen.cpp \
     Ui/mainappwindow.cpp \
 
 HEADERS += \
@@ -40,11 +39,9 @@ HEADERS += \
     Core/dbmanager.h \
     Core/User.h \
     Core/UserManager.h \
-    Ui/loginscreen.h \
     Ui/mainappwindow.h
 
 FORMS += \
-    Ui/loginscreen.ui \
     Ui/mainappwindow.ui
 
 # Default rules for deployment.

@@ -1,0 +1,28 @@
+**********************************************
+* SQL code for creating the databse tables   *
+**********************************************
+
+*************** Users Table ****************************
+* Users table contains all the needed user information *
+********************************************************
+
+CREATE TABLE "Users" (
+	"User_Id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	"First_Name"	VARCHAR(100) NOT NULL,
+	"Last_Name"	VARCHAR(100) NOT NULL,
+	"Email"	VARCHAR(100) NOT NULL UNIQUE,
+	"Username"	VARCHAR(50) NOT NULL UNIQUE,
+	"Password"	VARCHAR(50) NOT NULL UNIQUE
+);
+
+*************** Accounts Table *************************
+* Accounts table contains all the account information  *
+********************************************************
+
+CREATE TABLE "Accounts" (
+	"User_Id"	INT(10) NOT NULL,
+	"Account_Number"	INT(10) NOT NULL UNIQUE,
+	"Balance"	DOUBLE(10) NOT NULL,
+	PRIMARY KEY("Account_Number"),
+	FOREIGN KEY("User_Id") REFERENCES "Users"("User_Id")
+);

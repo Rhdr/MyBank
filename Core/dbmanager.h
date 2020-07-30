@@ -22,12 +22,12 @@
 #include <QList>
 #include <QVariant>
 #include "User.h"
+#include "Account.h"
 
 class DBManager
 {
 public:
-    //Opens the database connection
-    DBManager();
+    static DBManager* getInstance();
 
     //Closes the database connection
     ~DBManager();
@@ -70,6 +70,38 @@ public:
     //returns the data as qvariants in a qlist or an empty list if the user was not found.
     //this function should be called after UserExits()
     QList<QVariant> getUserData(QString usrNam, QString psswrd) const;
+
+    //Inserts a new account to the database(table Accounts)
+    //param : a Account class object by reference,
+    //returns true if the procedure was successful and false if the insertion failed
+    bool insertAccount(int usrId, Account& acc);
+
+    //Deletes a new account in the database(table Accounts)
+    //param : a Account class object by reference,
+    //returns true if the procedure was successful and false if the deletion failed
+    bool deleteAccount(Account& acc);
+
+    /*Updates a account in the database(table Accounts)
+      param : a Account class object by reference,
+            : the new value
+      returns true if the procedure was successful and false if it failed*/
+    bool updateAccount(Account& acc, double value);
+
+    //Checks if the account exists
+    //param : a Account class object by reference, this is the account in question
+    //returns true if the user exists and false if the user does not exists
+    bool AccountExits(Account& acc);
+
+    //Retrives Account data from database
+    //param : a Account class object by reference, this is the account in question
+    //returns the data as qvariants in a qlist or an empty list if the user was not found.
+    //this function should be called after AccountExits()
+    QList<QVariant> getAccountData(Account& acc) const;
+
 private:
     QSqlDatabase AppDatabase;
+
+    //Opens the database connection
+    DBManager();
+    static DBManager* dbManagerInstance;
 };

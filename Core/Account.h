@@ -4,6 +4,8 @@
 class Account
 {
 public:
+    Account();
+    Account(double bal);
     void setBalance(double bal);
     void setAccountNumber(int accNum);
     double getBalance() const;

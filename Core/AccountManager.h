@@ -2,15 +2,16 @@
 #include "Account.h"
 #include "dbmanager.h"
 
-class AccountManager : public Account
+class AccountManager
 {
 public:
-	Account createAccount(int accNum, double bal);
-	void updateAccount(int accNum);
-	void deleteAccount(int accNum);
-	std::string viewAccountInfo(int accNum);
+    AccountManager();
+    Account createAccount(double bal);
+    bool addAcount(int usrId,Account& acc);
+    bool updateAccount(int accNum);
+    bool deleteAccount(int accNum);
 	Account loadAccountInfo(int accNum);
 private:
-    DBManager dbmanager;
+    DBManager* dbmanager;
 };
 

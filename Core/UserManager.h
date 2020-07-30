@@ -69,6 +69,6 @@ public:
     User loadUserData(QString usrnam, QString psswrd);
 
 private:
-    DBManager dbmanager;
+    DBManager* dbmanager;
 };
 

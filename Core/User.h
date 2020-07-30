@@ -53,6 +53,11 @@ public:
     // param : eml(QString)
     void setEmail(QString eml);
 
+    // Changes the user_id to usrId
+    // param : usrId(int)
+    void setUserId(int usrId);
+
+    int getUserId() const; // returns the user id of the user
     QString getFirstName() const; // returns the first name of the user
     QString getLastName() const; // returns the last name of the user
     QString getUserName() const; // returns the user name of the user
@@ -60,6 +65,7 @@ public:
     QString getEmail() const; // returns the email of the user
 
 private:
+    int user_id;
     QString firstname; //user"s first name
     QString lastname; //user's last name
     QString username; //user's username

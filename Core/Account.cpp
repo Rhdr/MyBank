@@ -1,5 +1,12 @@
 #include "Account.h"
 
+Account::Account(){}
+
+Account::Account(double bal)
+{
+    balance = bal;
+}
+
 void Account::setBalance(double bal)
 {
     balance = bal;

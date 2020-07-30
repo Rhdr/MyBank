@@ -36,6 +36,16 @@ void User::setEmail(QString eml)
     email = eml;
 }
 
+void User::setUserId(int usrId)
+{
+    user_id = usrId;
+}
+
+int User::getUserId() const
+{
+    return  user_id;
+}
+
 QString User::getFirstName() const
 {
 	return firstname;
