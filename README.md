@@ -5,7 +5,6 @@ The goal of the this project is to create a banking app in order to help me unde
 ## Procedure
 
 This application is developed using the  'The incremental model'. In short a simple version of the software will be completed first then new features will be added overtime.
-The file "Docs" contains notes on how the software is structured namely sequence diagrams, UML diagrams and notes explaining the different concepts used.
 
 ### Contents
 
