@@ -1,6 +1,8 @@
 #include "UserManager.h"
 #include <QDebug>
 
+using namespace Manager;
+
 UserManager::UserManager(){
     dbmanager = DBManager::getInstance();
 }
@@ -87,6 +89,5 @@ User UserManager::loadUserData(QString usrnam, QString psswrd)
         qDebug() << "User not found";
         return User();
     }
-
 }
 

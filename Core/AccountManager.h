@@ -2,16 +2,20 @@
 #include "Account.h"
 #include "dbmanager.h"
 
-class AccountManager
-{
-public:
-    AccountManager();
-    Account createAccount(double bal);
-    bool addAcount(int usrId,Account& acc);
-    bool updateAccount(int accNum);
-    bool deleteAccount(int accNum);
-	Account loadAccountInfo(int accNum);
-private:
-    DBManager* dbmanager;
-};
+namespace Manager {
+    class AccountManager
+    {
+    public:
+        AccountManager();
+        Account createAccount(double bal);
+        bool addAcount(int usrId, Account& acc);
+        bool updateAccount(Account& acc, double newValue);
+        bool deleteAccount(Account& acc);
+        bool isValid(Account& acc);
+        Account loadAccountInfo(Account& acc);
+    private:
+        DBManager* dbmanager;
+    };
+}
+
 

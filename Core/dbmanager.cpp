@@ -1,12 +1,28 @@
-#include "dbmanager.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QSqlDatabase>
 #include <QDebug>
+#include "dbmanager.h"
+#include "dbsettings.h"
+
+#ifndef DB_LAST_SAVED
+#define DB_LAST_SAVED QSqlDatabase AppDatabase = Settings::DBsettings::lastSaved();
+#endif
+
+DBManager* DBManager::dbManagerInstance = nullptr;
+
+DBManager* DBManager::getInstance(){
+
+    if(dbManagerInstance == nullptr){
+        dbManagerInstance = new DBManager();
+    }
+    return dbManagerInstance;
+}
 
 DBManager::DBManager()
 {
-    AppDatabase = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase AppDatabase = QSqlDatabase::addDatabase("QSQLITE");
     AppDatabase.setDatabaseName("MyBankDB.db");
 
     if (!AppDatabase.open()){
@@ -14,34 +30,28 @@ DBManager::DBManager()
     }else{
         qDebug() << "DATABASE:: Connection successful";
     }
-}
 
-DBManager* DBManager::dbManagerInstance = nullptr;
-
-DBManager* DBManager::getInstance(){
-    if(dbManagerInstance == nullptr){
-        dbManagerInstance = new DBManager();
-    }
-    return dbManagerInstance;
+    Settings::DBsettings::save(AppDatabase);
 }
 
 DBManager::~DBManager()
 {
-    if (AppDatabase.isOpen()){
-        AppDatabase.close();
-        QSqlDatabase::removeDatabase("MyBankDB.db");
-        qDebug() << "DATABASE:: Database closed";
-    }
+    DB_LAST_SAVED
+    delete dbManagerInstance;
+    AppDatabase.close();
+    QSqlDatabase::removeDatabase(AppDatabase.databaseName());
+    qDebug() << "DATABASE:: Database closed";
 }
 
 bool DBManager::isOpen() const
 {
-    return AppDatabase.isOpen();
+    return Settings::DBsettings::lastSaved().open();
 }
 
 //Users Table
 bool DBManager::insertUser(User& usr)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("INSERT INTO Users(First_Name, Last_Name, Email, Username, Password)"
@@ -67,6 +77,7 @@ bool DBManager::insertUser(User& usr)
 
 bool DBManager::deleteUser(User& usr)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("DELETE FROM Users WHERE Username = :Username");
@@ -86,6 +97,7 @@ bool DBManager::deleteUser(User& usr)
 
 bool DBManager::updateUser(User& usr, int flag, QVariant& value)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     QString temp_value = "";
@@ -130,7 +142,6 @@ bool DBManager::updateUser(User& usr, int flag, QVariant& value)
 
 bool DBManager::UserExits(QString usrNam, QString psswrd)
 {
-
     bool exists = false;
     QSqlQuery query;
     query.prepare("SELECT * FROM Users WHERE Username = :usrNam AND Password = :psswrd");
@@ -174,13 +185,14 @@ QList<QVariant> DBManager::getUserData(QString usrNam, QString psswrd) const
 //Accounts Table
 bool DBManager::insertAccount(int usrId, Account& acc)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("INSERT INTO Accounts(User_Id, Balance)"
                   "VALUES (:User_Id, :Balance)");
     query.bindValue(":User_Id", usrId);
     query.bindValue(":Balance", acc.getBalance());
-    qDebug() << query.boundValues();
+
     if(AppDatabase.isOpen()){
         if(query.exec()){
             status = true;
@@ -196,10 +208,12 @@ bool DBManager::insertAccount(int usrId, Account& acc)
 
 bool DBManager::deleteAccount(Account& acc)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("DELETE FROM Accounts WHERE Account_Number = :Account_Number");
     query.bindValue(":Account_Number", acc.getAccountNumber());
+    qDebug() << query.boundValues();
     if(AppDatabase.isOpen()){
         if(query.exec()){
             status = true;
@@ -215,6 +229,7 @@ bool DBManager::deleteAccount(Account& acc)
 
 bool DBManager::updateAccount(Account& acc, double value)
 {
+    DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
 

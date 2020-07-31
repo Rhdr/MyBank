@@ -18,7 +18,6 @@
 ************************************************************************/
 
 #pragma once
-#include <QSqlDatabase>
 #include <QList>
 #include <QVariant>
 #include "User.h"
@@ -99,9 +98,7 @@ public:
     QList<QVariant> getAccountData(Account& acc) const;
 
 private:
-    QSqlDatabase AppDatabase;
-
-    //Opens the database connection
+    //opens database connection
     DBManager();
     static DBManager* dbManagerInstance;
 };
