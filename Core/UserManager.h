@@ -58,16 +58,14 @@ namespace Manager {
         bool deleteUser(User& usr);
 
         //Checks if the user is a valid User
-        //param : the username
-        //      : the password
+        //param : a User class object by reference,
         //returns true if the user is valid and false if the user is not in application's database
-        bool validateUser(QString usrnam, QString psswrd);
+        bool validateUser(User& usr);
 
         //Loads User data provided the username and password provided are valid
-        //param : the username
-        //      : the password
+        //param : a User class object by reference,
         //returns a User object
-        User loadUserData(QString usrnam, QString psswrd);
+        User loadUserData(User& usr);
 
     private:
         DBManager* dbmanager;

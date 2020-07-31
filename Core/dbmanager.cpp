@@ -6,7 +6,9 @@
 #include "dbmanager.h"
 #include "dbsettings.h"
 
-#ifndef DB_LAST_SAVED
+using namespace Manager;
+
+#ifndef DB_LAST_SAVED //TODO : Add a guard for when DB_LAST_SAVED is not defined
 #define DB_LAST_SAVED QSqlDatabase AppDatabase = Settings::DBsettings::lastSaved();
 #endif
 
@@ -49,18 +51,18 @@ bool DBManager::isOpen() const
 }
 
 //Users Table
-bool DBManager::insertUser(User& usr)
+bool DBManager::insertUser(QString fnam, QString lnam, QString eml, QString usrnam, QString psswrd)
 {
     DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("INSERT INTO Users(First_Name, Last_Name, Email, Username, Password)"
                   "VALUES (:First_Name, :Last_Name, :Email, :Username, :Password)");
-    query.bindValue(":First_Name", usr.getFirstName());
-    query.bindValue(":Last_Name", usr.getLastName());
-    query.bindValue(":Email", usr.getEmail());
-    query.bindValue(":Username", usr.getUserName());
-    query.bindValue(":Password", usr.getPassWord());
+    query.bindValue(":First_Name", fnam);
+    query.bindValue(":Last_Name", lnam);
+    query.bindValue(":Email", eml);
+    query.bindValue(":Username", usrnam);
+    query.bindValue(":Password", psswrd);
 
     if(AppDatabase.isOpen()){
         if(query.exec()){
@@ -75,13 +77,15 @@ bool DBManager::insertUser(User& usr)
     return status;
 }
 
-bool DBManager::deleteUser(User& usr)
+bool DBManager::deleteUser(QString usrnam, QString psswrd)
 {
     DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
-    query.prepare("DELETE FROM Users WHERE Username = :Username");
-    query.bindValue(":Username", usr.getUserName());
+    query.prepare("DELETE FROM Users WHERE Username = :Username AND Password = :Password");
+    query.bindValue(":Username", usrnam);
+    query.bindValue(":Password", psswrd);
+
     if(AppDatabase.isOpen()){
         if(query.exec()){
             status = true;
@@ -95,37 +99,16 @@ bool DBManager::deleteUser(User& usr)
     return status;
 }
 
-bool DBManager::updateUser(User& usr, int flag, QVariant& value)
+bool DBManager::updateUser(QString usrnam, QString psswrd, QString field, QString& value)
 {
     DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
-    QString temp_value = "";
-    QList<QString> fieldlist = {"First_Name", "Last_Name", "Email", "Username", "Password"};
-    QString field = fieldlist.at(flag);
 
-    if(field == "First_Name") {
-        usr.setFirstName(value.toString());
-        temp_value = usr.getFirstName();
-    }else if (field == "Last_Name") {
-        usr.setLastName(value.toString());
-        temp_value = usr.getLastName();
-    }else if (field == "Email") {
-        usr.setEmail(value.toString());
-        temp_value = usr.getEmail();
-    }else if (field == "Username") {
-        usr.setUserName(value.toString());
-        temp_value = usr.getUserName();
-    }else if (field == "Password") {
-        usr.setPassWord(value.toString());
-        temp_value = usr.getPassWord();
-    }else{
-        qDebug() << "invalid option";
-    }
-
-    query.prepare("UPDATE Users SET " + field + " = :newValue WHERE Username = :Username");
-    query.bindValue(":newValue",temp_value);
-    query.bindValue(":Username",usr.getUserName());
+    query.prepare("UPDATE Users SET " + field + " = :newValue WHERE Username = :Username AND Password = :Password");
+    query.bindValue(":newValue", value);
+    query.bindValue(":Username", usrnam);
+    query.bindValue(":Password", psswrd);
 
     if(AppDatabase.isOpen()){
         if(query.exec()){
@@ -183,7 +166,7 @@ QList<QVariant> DBManager::getUserData(QString usrNam, QString psswrd) const
 }
 
 //Accounts Table
-bool DBManager::insertAccount(int usrId, Account& acc)
+bool DBManager::insertAccount(int usrId, double value)
 {
     DB_LAST_SAVED
     QSqlQuery query;
@@ -191,7 +174,7 @@ bool DBManager::insertAccount(int usrId, Account& acc)
     query.prepare("INSERT INTO Accounts(User_Id, Balance)"
                   "VALUES (:User_Id, :Balance)");
     query.bindValue(":User_Id", usrId);
-    query.bindValue(":Balance", acc.getBalance());
+    query.bindValue(":Balance", value);
 
     if(AppDatabase.isOpen()){
         if(query.exec()){
@@ -206,14 +189,14 @@ bool DBManager::insertAccount(int usrId, Account& acc)
     return status;
 }
 
-bool DBManager::deleteAccount(Account& acc)
+bool DBManager::deleteAccount(int AccNum)
 {
     DB_LAST_SAVED
     QSqlQuery query;
     bool status = false;
     query.prepare("DELETE FROM Accounts WHERE Account_Number = :Account_Number");
-    query.bindValue(":Account_Number", acc.getAccountNumber());
-    qDebug() << query.boundValues();
+    query.bindValue(":Account_Number", AccNum);
+
     if(AppDatabase.isOpen()){
         if(query.exec()){
             status = true;
@@ -227,7 +210,7 @@ bool DBManager::deleteAccount(Account& acc)
     return status;
 }
 
-bool DBManager::updateAccount(Account& acc, double value)
+bool DBManager::updateAccount(int AccNum, double value)
 {
     DB_LAST_SAVED
     QSqlQuery query;
@@ -235,7 +218,7 @@ bool DBManager::updateAccount(Account& acc, double value)
 
     query.prepare("UPDATE Accounts SET Balance = :newValue WHERE Account_Number = :Account_Number");
     query.bindValue(":newValue", value);
-    query.bindValue(":Account_Number",acc.getAccountNumber());
+    query.bindValue(":Account_Number", AccNum);
 
     if(AppDatabase.isOpen()){
         if(query.exec()){
@@ -250,12 +233,12 @@ bool DBManager::updateAccount(Account& acc, double value)
     return status;
 }
 
-bool DBManager::AccountExits(Account& acc)
+bool DBManager::AccountExits(int AccNum)
 {
     bool exists = false;
     QSqlQuery query;
     query.prepare("SELECT * FROM Accounts WHERE Account_Number = :accNum");
-    query.bindValue(":accNum", acc.getAccountNumber());
+    query.bindValue(":accNum", AccNum);
 
     if (query.exec()){
         if(query.next()){
@@ -265,14 +248,14 @@ bool DBManager::AccountExits(Account& acc)
     return exists;
 }
 
-QList<QVariant> DBManager::getAccountData(Account &acc) const
+QList<QVariant> DBManager::getAccountData(int AccNum) const
 {
     QSqlQuery query;
     QList<QVariant> list;
 
     query.prepare("SELECT Account_Number, Balance"
                   " FROM Accounts WHERE Account_Number = :accNum");
-    query.bindValue(":accNum", acc.getAccountNumber());
+    query.bindValue(":accNum", AccNum);
 
     if (!query.exec()){
         qDebug() << "DATABASE:: Failed to retrieve data from Accounts table - " << query.lastError();

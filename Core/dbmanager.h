@@ -20,9 +20,8 @@
 #pragma once
 #include <QList>
 #include <QVariant>
-#include "User.h"
-#include "Account.h"
 
+namespace Manager {
 class DBManager
 {
 public:
@@ -38,12 +37,12 @@ public:
     //Inserts a new user to the database(table Users)
     //param : a User class object by reference,
     //returns true if the procedure was successful and false if the insertion failed
-    bool insertUser(User& usr);
+    bool insertUser(QString fnam, QString lnam, QString eml, QString usrnam, QString psswrd);
 
     //Deletes a new user in the database(table Users)
     //param : a User class object by reference,
     //returns true if the procedure was successful and false if the deletion failed
-    bool deleteUser(User& usr);
+    bool deleteUser(QString usrnam, QString psswrd);
 
     /*Updates a user in the database(table Users)
       param : a User class object by reference,
@@ -55,7 +54,7 @@ public:
               "Password"   4.
             : the new value
       returns true if the procedure was successful and false if it failed*/
-    bool updateUser(User& usr, int flag, QVariant& value);
+    bool updateUser(QString usrnam, QString psswrd, QString field, QString& value);
 
     //Checks if the user exists
     //param : the username
@@ -73,32 +72,34 @@ public:
     //Inserts a new account to the database(table Accounts)
     //param : a Account class object by reference,
     //returns true if the procedure was successful and false if the insertion failed
-    bool insertAccount(int usrId, Account& acc);
+    bool insertAccount(int usrId, double value);
 
     //Deletes a new account in the database(table Accounts)
     //param : a Account class object by reference,
     //returns true if the procedure was successful and false if the deletion failed
-    bool deleteAccount(Account& acc);
+    bool deleteAccount(int AccNum);
 
     /*Updates a account in the database(table Accounts)
-      param : a Account class object by reference,
-            : the new value
+     * param : the account number
+     *       : the new value
       returns true if the procedure was successful and false if it failed*/
-    bool updateAccount(Account& acc, double value);
+    bool updateAccount(int AccNum, double value);
 
     //Checks if the account exists
     //param : a Account class object by reference, this is the account in question
     //returns true if the user exists and false if the user does not exists
-    bool AccountExits(Account& acc);
+    bool AccountExits(int AccNum);
 
     //Retrives Account data from database
     //param : a Account class object by reference, this is the account in question
     //returns the data as qvariants in a qlist or an empty list if the user was not found.
     //this function should be called after AccountExits()
-    QList<QVariant> getAccountData(Account& acc) const;
+    QList<QVariant> getAccountData(int AccNum) const;
 
 private:
     //opens database connection
     DBManager();
     static DBManager* dbManagerInstance;
 };
+}
+

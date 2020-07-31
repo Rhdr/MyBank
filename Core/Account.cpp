@@ -1,6 +1,8 @@
 #include "Account.h"
 
-Account::Account(){}
+Account::Account(){
+    balance = 0;
+}
 
 Account::Account(double bal)
 {

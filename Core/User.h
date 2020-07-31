@@ -24,37 +24,48 @@ class User
 {
 public:
     User();
-	/*	initializes the private members of class User
-        param : fnam the user's first name
-              : lnam the user's last name
-              : usrnam the user's username
-              : psswrd the user's password
-              : eml the user's email address
+    /* initializes the private members of class User
+     * param : fnam the user's first name
+     *       : lnam the user's last name
+     *       : usrnam the user's username
+     *       : psswrd the user's password
+     *       : eml the user's email address
     */
     User(QString fnam, QString lnam, QString eml, QString usrnam, QString psswrd);
 
-	// Changes the first name to fnam
-    // param : fnam(QString)
+    /*
+     * Changes firstname to fnam
+     * param : The new user's first name
+    */
     void setFirstName(QString fnam);
 
-	// Changes the last name to lnam
-    // param : lnam(QString)
+    /*
+     * Changes lastname to lnam
+     * param : The new user's last name
+    */
     void setLastName(QString lnam);
 
-	// Changes the user name to usrnam
-    // param : usrnam(QString)
+    /*
+     * Changes username to usrnam
+     * param : The new user's username
+    */
     void setUserName(QString usrnam);
 
-	// Changes the password to psswrd
-    // param : psswrd(QString)
+    /*
+     * Changes password to psswrd
+     * param : The new user's password
+    */
     void setPassWord(QString psswrd);
 
-	// Changes the email to eml
-    // param : eml(QString)
+    /*
+     * Changes email to eml
+     * param : The new user's email
+    */
     void setEmail(QString eml);
 
-    // Changes the user_id to usrId
-    // param : usrId(int)
+    /* Changes the user_id to usrId
+     * param : The new user id
+    */
     void setUserId(int usrId);
 
     int getUserId() const; // returns the user id of the user
@@ -66,7 +77,7 @@ public:
 
 private:
     int user_id;
-    QString firstname; //user"s first name
+    QString firstname; //user's first name
     QString lastname; //user's last name
     QString username; //user's username
     QString password; //user's password

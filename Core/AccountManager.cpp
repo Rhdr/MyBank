@@ -16,8 +16,10 @@ Account AccountManager::createAccount(double bal)
 bool AccountManager::addAcount(int usrId, Account& acc)
 {
     bool status = false;
-    if(!dbmanager->AccountExits(acc)){
-        if(dbmanager->insertAccount(usrId, acc)){
+    int accountNumber = acc.getAccountNumber();
+    if(!dbmanager->AccountExits(accountNumber)){
+        double accountBalance = acc.getBalance();
+        if(dbmanager->insertAccount(usrId, accountBalance)){
             qDebug() << "Account inserted";
             status = true;
         }else{
@@ -30,11 +32,11 @@ bool AccountManager::addAcount(int usrId, Account& acc)
     return status;
 }
 
-bool AccountManager::updateAccount(Account& acc, double newValue)
+bool AccountManager::updateAccount(int accNum, double newValue)
 {
     bool status = false;
-    if(dbmanager->AccountExits(acc)){
-        if(dbmanager->updateAccount(acc, newValue)){
+    if(dbmanager->AccountExits(accNum)){
+        if(dbmanager->updateAccount(accNum, newValue)){
             qDebug() << "Account updated";
             status = true;
         }else{
@@ -47,11 +49,12 @@ bool AccountManager::updateAccount(Account& acc, double newValue)
     return status;
 }
 
-bool AccountManager::deleteAccount(Account &acc)
+bool AccountManager::deleteAccount(int accNum)
 {
     bool status = false;
-    if(dbmanager->AccountExits(acc)){
-        if(dbmanager->deleteAccount(acc)){
+    if(dbmanager->AccountExits(accNum)){
+
+        if(dbmanager->deleteAccount(accNum)){
             qDebug() << "Account deleted";
             status = true;
         }else{
@@ -65,18 +68,18 @@ bool AccountManager::deleteAccount(Account &acc)
 
 }
 
-bool AccountManager::isValid(Account &acc)
+bool AccountManager::isValid(int accNum)
 {
     bool status = false;
-    if(dbmanager->AccountExits(acc))
+    if(dbmanager->AccountExits(accNum))
         status = true;
     return status;
 }
 
-Account AccountManager::loadAccountInfo(Account &acc)
+Account AccountManager::loadAccountInfo(int accNum) //might need to add user id for retriving an AccountList
 {
-    if(dbmanager->AccountExits(acc)){
-        QList<QVariant> list = dbmanager->getAccountData(acc);
+    if(dbmanager->AccountExits(accNum)){
+        QList<QVariant> list = dbmanager->getAccountData(accNum);
         if(list.isEmpty()){
             qDebug() << "failed to fetch data from database";
             return Account();

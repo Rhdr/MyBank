@@ -14,23 +14,23 @@ int main(int argc, char *argv[])
 
     //bool loginStatus = false;
     User currentUser;
-    //Account acc1 = accmanager.createAccount(0.0);
+    int currentUser_ID = 0;
+    Account acc1;
 
+    //Input from the view
     QString username = "zielinkin1";
     QString password = "123456";
+    currentUser.setUserName(username);
+    currentUser.setPassWord(password);
 
-    if(usrmanager.validateUser(username, password)){
+    if(usrmanager.validateUser(currentUser)){
         //loginStatus = true;
-        currentUser = usrmanager.loadUserData(username, password);
-        w.show();
+        currentUser = usrmanager.loadUserData(currentUser);
+        currentUser_ID = currentUser.getUserId();
+        w.show(); //Application crashes if window not shown
     }
-//    populating the accounts table in the database
-//    for (int i=0; i < 5; i++) {
-//        accmanager.addAcount(currentUser.getUserId(), acc1);
-//    }
 
     //run app until login status is false.
-
     return a.exec();
 }
 
