@@ -33,7 +33,9 @@ SOURCES += \
     Core/UserManager.cpp \
     Ui/mainappwindow.cpp \
     Core/dbsettings.cpp \
-    Ui/uisettings.cpp
+    Ui/uisettings.cpp \
+    Cont/contuser.cpp \
+    Ui/viewuser.cpp
 
 HEADERS += \
     Core/Account.h \
@@ -43,7 +45,9 @@ HEADERS += \
     Core/UserManager.h \
     Ui/mainappwindow.h \
     Core/dbsettings.h \
-    Ui/uisettings.h
+    Ui/uisettings.h \
+    Cont/contuser.h \
+    Ui/viewuser.h
 
 FORMS += \
     Ui/mainappwindow.ui

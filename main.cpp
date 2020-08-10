@@ -4,12 +4,21 @@
 #include "Ui/mainappwindow.h"
 #include <QDebug>
 
+#include "Cont/contuser.h"
+#include "Ui/viewuser.h"
+#include "Core/UserManager.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     Manager::UserManager usrmanager;
     Manager::AccountManager accmanager;
     MainAppWindow w;
+
+    //test ContUser
+    Manager::UserManager *modelUser = new Manager::UserManager;
+    ViewUser *viewUser = new ViewUser;
+    ContUser contUser(modelUser, viewUser);
 
 
     //bool loginStatus = false;

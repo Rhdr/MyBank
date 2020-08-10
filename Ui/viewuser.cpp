@@ -8,25 +8,25 @@ ViewUser::ViewUser(QWidget *parent) :
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     //create objects    //parent will be the layout
-    QLabel *lblUserId = new QLabel("User_Id");
-    QSpinBox *spnUserId = new QSpinBox();
+    lblUserId = new QLabel("User_Id");
+    spnUserId = new QSpinBox();
 
-    QLabel *lblFirstName = new QLabel("First Name");
-    QLineEdit *txtFirstName = new QLineEdit();
+    lblFirstName = new QLabel("First Name");
+    txtFirstName = new QLineEdit();
 
-    QLabel *lblLastName = new QLabel("Last Name");
-    QLineEdit *txtLastName = new QLineEdit();
+    lblLastName = new QLabel("Last Name");
+    txtLastName = new QLineEdit();
 
-    QLabel *lblUsername = new QLabel("Username");
-    QLineEdit *txtUsername = new QLineEdit();
+    lblUsername = new QLabel("Username");
+    txtUsername = new QLineEdit();
 
-    QLabel *lblPassword = new QLabel("Password");
-    QLineEdit *txtPassword = new QLineEdit();
+    lblPassword = new QLabel("Password");
+    txtPassword = new QLineEdit();
 
-    QLabel *lblEmail = new QLabel("Email");
-    QLineEdit *txtEmail = new QLineEdit();
+    lblEmail = new QLabel("Email");
+    txtEmail = new QLineEdit();
 
-    QPushButton *btnSave = new QPushButton("Save");
+    btnSave = new QPushButton("Save");
 
 
     //setup Layout      //parent will be the ViewUser form
